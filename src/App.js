@@ -30,6 +30,11 @@ class App extends Component {
         })
     }
 
+    toggleSelectAll = (bool) => {
+        let updatedMessages = this.state.messages.map(message => ({...message, selected: bool}))
+        this.setState({messages: updatedMessages})
+    }
+
     toggleStarred = id => {
         axios.patch(`http://localhost:8082/api/messages/`, {
             messageIds: [id],
@@ -63,13 +68,39 @@ class App extends Component {
             })
     }
 
+    deleteMessage = () => {
+        let selectedMessages = this.state.messages.filter(message => message.selected)
+        axios.patch(`http://localhost:8082/api/messages/`, {
+            messageIds: selectedMessages.map(message => message.id),
+            command: 'delete'
+        })
+            .then(res => {
+                this.setState({messages:res.data})
+            })
+    }
+
+    toggleLabel = (toggle, label) => {
+        let selectedMessages = this.state.messages.filter(message => message.selected)
+        axios.patch(`http://localhost:8082/api/messages/`, {
+            messageIds: selectedMessages.map(message => message.id),
+            command: toggle,
+            label: label
+        })
+            .then(res => {
+                this.setState({messages:res.data})
+                console.log(this.state.messages)
+            })
+    }
+
     render() {
         return (
             <div className="container">
                 <Toolbar
                     messages={this.state.messages}
                     toggleMultiRead={this.toggleMultiRead}
-                    toggleMultiUnread={this.toggleMultiUnread}
+                    toggleSelectAll={this.toggleSelectAll}
+                    deleteMessage={this.deleteMessage}
+                    toggleLabel={this.toggleLabel}
                 />
                 <ComposeMessage/>
                 <Messages

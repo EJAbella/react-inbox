@@ -1,17 +1,11 @@
 import React from 'react'
 
-const Toolbar = ({messages, toggleMultiRead, toggleMultiUnread}) => {
+const Toolbar = ({messages, toggleMultiRead, toggleSelectAll, deleteMessage, toggleLabel}) => {
 
     let active = messages.filter(message => message.selected)
     let unread = messages.filter(message => !message.read)
 
-    let readHandler = () => {
-        toggleMultiRead(true)
-    }
-
-    let unreadHandler = () => {
-        toggleMultiRead(false)
-    }
+    let allSelected = messages.length === active.length
 
     return (
         <div className="row toolbar">
@@ -25,14 +19,14 @@ const Toolbar = ({messages, toggleMultiRead, toggleMultiUnread}) => {
                     unread messages
                 </p>
 
-                <button className="btn btn-default">
+                <button onClick={() => toggleSelectAll(!allSelected)} className="btn btn-default">
                     <i className="fa fa-square-o"></i>
                 </button>
 
                 <button
                     className="btn btn-default"
                     disabled={active.length < 1 ? true : null}
-                    onClick={readHandler}
+                    onClick={() => toggleMultiRead(true)}
                 >
                     Mark As Read
                 </button>
@@ -40,26 +34,26 @@ const Toolbar = ({messages, toggleMultiRead, toggleMultiUnread}) => {
                 <button
                     className="btn btn-default"
                     disabled={active.length < 1 ? true : null}
-                    onClick={unreadHandler}
+                    onClick={() => toggleMultiRead(false)}
                 >
                     Mark As Unread
                 </button>
 
-                <select className="form-control label-select" disabled={active.length < 1 ? true : null}>
+                <select onChange={(e) => toggleLabel('addLabel', e.target.value)} className="form-control label-select" disabled={active.length < 1 ? true : null}>
                     <option>Apply label</option>
                     <option value="dev">dev</option>
                     <option value="personal">personal</option>
                     <option value="gschool">gschool</option>
                 </select>
 
-                <select className="form-control label-select" disabled={active.length < 1 ? true : null}>
+                <select onChange={(e) => toggleLabel('removeLabel', e.target.value)} className="form-control label-select" disabled={active.length < 1 ? true : null}>
                     <option>Remove label</option>
                     <option value="dev">dev</option>
                     <option value="personal">personal</option>
                     <option value="gschool">gschool</option>
                 </select>
 
-                <button className="btn btn-default" disabled={active.length < 1 ? true : null}>
+                <button onClick={() => deleteMessage()} className="btn btn-default" disabled={active.length < 1 ? true : null}>
                     <i className="fa fa-trash-o"></i>
                 </button>
             </div>
