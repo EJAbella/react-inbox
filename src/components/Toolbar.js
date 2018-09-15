@@ -2,10 +2,22 @@ import React from 'react'
 
 const Toolbar = ({messages, toggleMultiRead, toggleSelectAll, deleteMessage, toggleLabel, toggleComposeForm}) => {
 
-    let active = messages.filter(message => message.selected)
-    let unread = messages.filter(message => !message.read)
+    let active = messages.filter(message => message.selected);
+    let unread = messages.filter(message => !message.read);
 
-    let allSelected = messages.length === active.length
+    let allSelected = messages.length === active.length; // Used to toggle Select All
+
+    let faSquareClass = '';
+    switch(active.length){
+        case messages.length:
+            faSquareClass = 'fa-check-square-o';
+            break;
+        case 0:
+            faSquareClass = 'fa-square-o';
+            break;
+        default:
+            faSquareClass = 'fa-minus-square-o'
+    }
 
     return (
         <div className="row toolbar">
@@ -20,7 +32,7 @@ const Toolbar = ({messages, toggleMultiRead, toggleSelectAll, deleteMessage, tog
                 </p>
 
                 <button onClick={() => toggleSelectAll(!allSelected)} className="btn btn-default">
-                    <i className="fa fa-square-o"></i>
+                    <i className={`fa ${faSquareClass}`}></i>
                 </button>
 
                 <button
@@ -59,6 +71,6 @@ const Toolbar = ({messages, toggleMultiRead, toggleSelectAll, deleteMessage, tog
             </div>
         </div>
     )
-}
+};
 
 export default Toolbar

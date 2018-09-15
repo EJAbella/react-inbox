@@ -25,7 +25,7 @@ class Message extends React.Component {
                     <div className="col-xs-1">
                         <div className="row">
                             <div className="col-xs-2">
-                                <input onClick={this.handleSelect} type="checkbox" defaultChecked={this.props.message.selected}/>
+                                <input onClick={this.handleSelect} type="checkbox" readOnly checked={this.props.message.selected}/>
                             </div>
                             <div className="col-xs-2">
                                 <i onClick={this.handleStarred}
