@@ -7,7 +7,8 @@ import axios from 'axios';
 class App extends Component {
 
     state = {
-        messages: []
+        messages: [],
+        composeFormFlag: false
     }
 
     componentDidMount() {
@@ -92,6 +93,24 @@ class App extends Component {
             })
     }
 
+    toggleComposeForm = () => {
+        this.setState({composeFormFlag: !this.state.composeFormFlag})
+    }
+
+    sendMessage = (msg) => {
+        axios.post(`http://localhost:8082/api/messages/`, {
+            subject: msg.subject,
+            body: msg.body
+        }).then(() =>
+            axios.get(`http://localhost:8082/api/messages`)
+                .then(res => {
+                    this.setState({
+                        messages: res.data
+                    })
+                })
+        )
+    }
+
     render() {
         return (
             <div className="container">
@@ -101,8 +120,9 @@ class App extends Component {
                     toggleSelectAll={this.toggleSelectAll}
                     deleteMessage={this.deleteMessage}
                     toggleLabel={this.toggleLabel}
+                    toggleComposeForm={this.toggleComposeForm}
                 />
-                <ComposeMessage/>
+                {this.state.composeFormFlag && <ComposeMessage sendMessage={this.sendMessage}/>}
                 <Messages
                     messages={this.state.messages}
                     toggleStarred={this.toggleStarred}

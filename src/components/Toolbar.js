@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Toolbar = ({messages, toggleMultiRead, toggleSelectAll, deleteMessage, toggleLabel}) => {
+const Toolbar = ({messages, toggleMultiRead, toggleSelectAll, deleteMessage, toggleLabel, toggleComposeForm}) => {
 
     let active = messages.filter(message => message.selected)
     let unread = messages.filter(message => !message.read)
@@ -10,7 +10,7 @@ const Toolbar = ({messages, toggleMultiRead, toggleSelectAll, deleteMessage, tog
     return (
         <div className="row toolbar">
             <div className="col-md-12">
-                <a className="btn btn-danger">
+                <a onClick={() => toggleComposeForm()} className="btn btn-danger">
                     <i className="fa fa-plus"></i>
                 </a>
 
