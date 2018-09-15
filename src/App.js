@@ -51,25 +51,12 @@ class App extends Component {
             })
     }
 
-    toggleMultiRead = () => {
+    toggleMultiRead = (bool) => {
         let selectedMessages = this.state.messages.filter(message => message.selected)
         axios.patch(`http://localhost:8082/api/messages/`, {
             messageIds: selectedMessages.map(message => message.id),
             command: 'read',
-            read: true
-        })
-            .then(res => {
-                this.setState({messages:res.data})
-            })
-    }
-
-    toggleMultiUnread = () => {
-        let selectedMessages = this.state.messages.filter(message => message.selected)
-        console.log(selectedMessages)
-        axios.patch(`http://localhost:8082/api/messages/`, {
-            messageIds: selectedMessages.map(message => message.id),
-            command: 'read',
-            read: false
+            read: bool
         })
             .then(res => {
                 this.setState({messages:res.data})

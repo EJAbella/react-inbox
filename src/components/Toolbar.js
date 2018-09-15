@@ -6,11 +6,11 @@ const Toolbar = ({messages, toggleMultiRead, toggleMultiUnread}) => {
     let unread = messages.filter(message => !message.read)
 
     let readHandler = () => {
-        toggleMultiRead()
+        toggleMultiRead(true)
     }
 
     let unreadHandler = () => {
-        toggleMultiUnread()
+        toggleMultiRead(false)
     }
 
     return (
