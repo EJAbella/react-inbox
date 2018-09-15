@@ -1,9 +1,17 @@
 import React from 'react'
 
-const Toolbar = ({messages}) => {
+const Toolbar = ({messages, toggleMultiRead, toggleMultiUnread}) => {
 
     let active = messages.filter(message => message.selected)
     let unread = messages.filter(message => !message.read)
+
+    let readHandler = () => {
+        toggleMultiRead()
+    }
+
+    let unreadHandler = () => {
+        toggleMultiUnread()
+    }
 
     return (
         <div className="row toolbar">
@@ -21,11 +29,19 @@ const Toolbar = ({messages}) => {
                     <i className="fa fa-square-o"></i>
                 </button>
 
-                <button className="btn btn-default" disabled={active.length < 1 ? true : null}>
+                <button
+                    className="btn btn-default"
+                    disabled={active.length < 1 ? true : null}
+                    onClick={readHandler}
+                >
                     Mark As Read
                 </button>
 
-                <button className="btn btn-default" disabled={active.length < 1 ? true : null}>
+                <button
+                    className="btn btn-default"
+                    disabled={active.length < 1 ? true : null}
+                    onClick={unreadHandler}
+                >
                     Mark As Unread
                 </button>
 

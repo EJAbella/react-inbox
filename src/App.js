@@ -41,11 +41,35 @@ class App extends Component {
     }
 
     toggleRead = message => {
-        console.log(this.state)
         axios.patch(`http://localhost:8082/api/messages/`, {
             messageIds: [message.id],
             command: 'read',
             read: !message.read
+        })
+            .then(res => {
+                this.setState({messages:res.data})
+            })
+    }
+
+    toggleMultiRead = () => {
+        let selectedMessages = this.state.messages.filter(message => message.selected)
+        axios.patch(`http://localhost:8082/api/messages/`, {
+            messageIds: selectedMessages.map(message => message.id),
+            command: 'read',
+            read: true
+        })
+            .then(res => {
+                this.setState({messages:res.data})
+            })
+    }
+
+    toggleMultiUnread = () => {
+        let selectedMessages = this.state.messages.filter(message => message.selected)
+        console.log(selectedMessages)
+        axios.patch(`http://localhost:8082/api/messages/`, {
+            messageIds: selectedMessages.map(message => message.id),
+            command: 'read',
+            read: false
         })
             .then(res => {
                 this.setState({messages:res.data})
@@ -57,6 +81,8 @@ class App extends Component {
             <div className="container">
                 <Toolbar
                     messages={this.state.messages}
+                    toggleMultiRead={this.toggleMultiRead}
+                    toggleMultiUnread={this.toggleMultiUnread}
                 />
                 <ComposeMessage/>
                 <Messages
